@@ -95,7 +95,20 @@ uint32_t little_to_big_endian(uint32_t little_endian_value) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	uint32_t little_endian_value = 0x12345678;  // Example little-endian value
+	uint32_t big_endian_value;
 
+	    // Convert the little-endian value to big-endian format
+	big_endian_value = little_to_big_endian(little_endian_value);
+
+	    // Print the original little-endian value
+	    // The format specifier %08X ensures the output is 8 digits wide, padded with zeros if necessary
+	printf("Little-endian value: 0x%08X\n", little_endian_value);
+
+	    // Print on console the converted big-endian value
+	printf("Big-endian value: 0x%08X\n", big_endian_value);
+
+	return 0;  // end
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
