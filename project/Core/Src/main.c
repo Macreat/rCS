@@ -108,7 +108,7 @@ int main(void)
 	    // Print on console the converted big-endian value
 	printf("Big-endian value: 0x%08lX\n", big_endian_value);
 
-	return 0;  // end
+	return 0;  // end of the program (task complete)
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
