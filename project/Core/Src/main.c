@@ -64,6 +64,28 @@ uint32_t little_to_big_endian(uint32_t little_endian_value);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+//definition of the function
+
+/* Function to convert from little-endian to big-endian
+/ Input: a 32-bit unsigned integer in little-endian format
+Output: a 32-bit unsigned integer in big-endian format */
+uint32_t little_to_big_endian(uint32_t little_endian_value) {
+    uint32_t byte0, byte1, byte2, byte3;
+
+    // Extract individual bytes from the little-endian value
+    // The mask (0x000000FF, 0x0000FF00, etc.) isolates each byte
+    // The shift (>>, <<) moves bytes to the correct position
+    byte0 = (little_endian_value & 0x000000FF) >> 0;  // Extract byte 0 (least significant byte)
+    byte1 = (little_endian_value & 0x0000FF00) >> 8;  // Extract byte 1
+    byte2 = (little_endian_value & 0x00FF0000) >> 16; // Extract byte 2
+    byte3 = (little_endian_value & 0xFF000000) >> 24; // Extract byte 3 (most significant byte)
+
+    // Rearrange the bytes in big-endian order
+    // The bytes are shifted to their new positions and combined using bitwise OR (|)
+    // Byte0 becomes the most significant byte, and byte3 becomes the least significant
+    return (byte0 << 24) | (byte1 << 16) | (byte2 << 8) | (byte3 << 0);
+}
+
 /* USER CODE END 0 */
 
 /**
