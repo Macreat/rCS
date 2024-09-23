@@ -218,13 +218,13 @@ int main(void)
 
 	    // Print the original little-endian value
 	    // The format specifier %08X ensures the output is 8 digits wide, padded with zeros if necessary
-	printf("Little-endian value: 0x%08X\n", little_endian_value);
+	printf("Little-endian value: 0x%08lX\n", little_endian_value);
  80002c6:	6879      	ldr	r1, [r7, #4]
  80002c8:	4806      	ldr	r0, [pc, #24]	@ (80002e4 <main+0x30>)
  80002ca:	f000 fa25 	bl	8000718 <iprintf>
 
 	    // Print on console the converted big-endian value
-	printf("Big-endian value: 0x%08X\n", big_endian_value);
+	printf("Big-endian value: 0x%08lX\n", big_endian_value);
  80002ce:	6839      	ldr	r1, [r7, #0]
  80002d0:	4805      	ldr	r0, [pc, #20]	@ (80002e8 <main+0x34>)
  80002d2:	f000 fa21 	bl	8000718 <iprintf>
@@ -1780,11 +1780,11 @@ __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
  8000d14:	4630      	mov	r0, r6
  8000d16:	f000 f879 	bl	8000e0c <_printf_i>
  8000d1a:	e7e4      	b.n	8000ce6 <_vfiprintf_r+0x1e6>
- 8000d1c:	08001446 	.word	0x08001446
- 8000d20:	08001450 	.word	0x08001450
+ 8000d1c:	08001447 	.word	0x08001447
+ 8000d20:	08001451 	.word	0x08001451
  8000d24:	00000000 	.word	0x00000000
  8000d28:	08000adb 	.word	0x08000adb
- 8000d2c:	0800144c 	.word	0x0800144c
+ 8000d2c:	0800144d 	.word	0x0800144d
 
 08000d30 <_printf_common>:
  8000d30:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -2115,8 +2115,8 @@ __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
  800103c:	f104 0619 	add.w	r6, r4, #25
  8001040:	e7f5      	b.n	800102e <_printf_i+0x222>
  8001042:	bf00      	nop
- 8001044:	08001457 	.word	0x08001457
- 8001048:	08001468 	.word	0x08001468
+ 8001044:	08001458 	.word	0x08001458
+ 8001048:	08001469 	.word	0x08001469
 
 0800104c <__sflush_r>:
  800104c:	f9b1 200c 	ldrsh.w	r2, [r1, #12]

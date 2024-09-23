@@ -103,10 +103,10 @@ int main(void)
 
 	    // Print the original little-endian value
 	    // The format specifier %08X ensures the output is 8 digits wide, padded with zeros if necessary
-	printf("Little-endian value: 0x%08X\n", little_endian_value);
+	printf("Little-endian value: 0x%08lX\n", little_endian_value);
 
 	    // Print on console the converted big-endian value
-	printf("Big-endian value: 0x%08X\n", big_endian_value);
+	printf("Big-endian value: 0x%08lX\n", big_endian_value);
 
 	return 0;  // end
   /* USER CODE END 1 */
