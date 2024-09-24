@@ -66,7 +66,7 @@ void delay_ms(uint32_t ms)
 {
   for (uint32_t i = 0; i < ms * 1000; i++)
   {
-    __NOP();  // mo operation
+    __NOP(); // mo operation
   }
 }
 /* USER CODE END 0 */
@@ -87,6 +87,14 @@ int main(void)
   // HAL_Init();  // not using hal
 
   /* USER CODE BEGIN Init */
+
+  //  clock enabled for the GPIOA port used to control our lD2
+  RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+
+  // configure pa5 as output : 
+
+  GPIOA->MODER &= ~(3UL << (2 * 5));  // cleaning MODER5 bits
+  GPIOA->MODER |= (1UL << (2 * 5));   // PA5 as output
 
   /* USER CODE END Init */
 
