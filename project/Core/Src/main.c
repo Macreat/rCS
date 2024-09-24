@@ -93,8 +93,8 @@ int main(void)
 
   // configure pa5 as output : 
 
-  GPIOA->MODER &= ~(3UL << (2 * 5));  // cleaning MODER5 bits
-  GPIOA->MODER |= (1UL << (2 * 5));   // PA5 as output
+  LD2_GPIO_Port->MODER &= ~(3UL << (2 * LD2_Pin));  // cleaning MODER5 bits using LD2 port
+  LD2_GPIO_Port->MODER |= (1UL << (2 * LD2_Pin));   // LD2 as output
 
   /* USER CODE END Init */
 
@@ -116,13 +116,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // turning on
-	  GPIOA-> BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 state
+	  // turning on LD2
+	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 state
 	  delayMs(500);
 
-	  // turning off
+	  // turning off LD2
 
-	  GPIOA-> BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 state
+	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 state
 	  delayMs(500); // using function delay with 500 ms
 
 
