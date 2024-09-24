@@ -117,12 +117,12 @@ int main(void)
   while (1)
   {
 	  // turning on LD2
-	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 state
+	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 register (bit set)
 	  delayMs(500);
 
 	  // turning off LD2
 
-	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 state
+	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 register (bit reset)
 	  delayMs(500); // using function delay with 500 ms
 
 

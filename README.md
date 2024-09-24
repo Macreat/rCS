@@ -21,5 +21,9 @@ System Clock Configuration: The clock system has been set up using the MSI oscil
 Basic Interrupt Management: EXTI interrupts have been configured for certain GPIO pins
  allowing the system to react to external button presses or similar triggers.
  
- 
- 
+
+Control of the LD2 (PA5) LED is done using bit registers in the STM32:
+
+1. Enable the GPIOA port clock by setting the RCC->AHB2ENR register.
+2. Pin PA5 is configured as output by setting the corresponding bits in GPIOA->MODER.
+3. The LED is turned on and off using the GPIOA->BSRR register, activating and deactivating the PA5 bit directly, without using the HAL
