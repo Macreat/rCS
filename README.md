@@ -22,6 +22,4 @@ Basic Interrupt Management: EXTI interrupts have been configured for certain GPI
  allowing the system to react to external button presses or similar triggers.
  
  
-little_to_big_endian: function that allows us to program that converts a 32-bit value stored in memory
- from "little endian" format to "big endian" format, 
- without using the "REV" instruction.
+ 
