@@ -88,13 +88,17 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
-  //  clock enabled for the GPIOA port used to control our lD2
-  RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN;
+  //  clock enabled for the GPIOA port used to control our lD2 and now PC13 as gpio input (button)
+  RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN | RCC_AHB2ENR_GPIOCEN;
 
-  // configure pa5 as output : 
+  // configure pa5 as output :
 
-  LD2_GPIO_Port->MODER &= ~(3UL << (2 * LD2_Pin));  // cleaning MODER5 bits using LD2 port
-  LD2_GPIO_Port->MODER |= (1UL << (2 * LD2_Pin));   // LD2 as output
+  LD2_GPIO_Port->MODER &= ~(3UL << (2 * LD2_Pin)); // cleaning MODER5 bits using LD2 port
+  LD2_GPIO_Port->MODER |= (1UL << (2 * LD2_Pin));  // LD2 as output
+
+  // configure PC13 as input:
+  BlueButton_GPIO_Port->MODER &= ~(3UL << (2 * BlueButton_Pin)); // Clear bits 26 and 27 for PC13 in MODER to configure blueButtom
+  // as input
 
   /* USER CODE END Init */
 
@@ -116,16 +120,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // turning on LD2
-	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 register (bit set)
-	  delayMs(500);
+    // turning on LD2
+    LD2_GPIO_Port->BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 register (bit set)
+    delayMs(500);
 
-	  // turning off LD2
+    // turning off LD2
 
-	  LD2_GPIO_Port-> BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 register (bit reset)
-	  delayMs(500); // using function delay with 500 ms
-
-
+    LD2_GPIO_Port->BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 register (bit reset)
+    delayMs(500);                        // using function delay with 500 ms
 
     /* USER CODE END WHILE */
 
@@ -231,6 +233,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
@@ -239,6 +242,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : BlueButton_Pin */
+  GPIO_InitStruct.Pin = BlueButton_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BlueButton_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : S1_Pin S2_Pin */
   GPIO_InitStruct.Pin = S1_Pin|S2_Pin;

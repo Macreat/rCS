@@ -57,14 +57,16 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BlueButton_Pin GPIO_PIN_13
+#define BlueButton_GPIO_Port GPIOC
 #define S1_Pin GPIO_PIN_1
 #define S1_GPIO_Port GPIOA
 #define S1_EXTI_IRQn EXTI1_IRQn
 #define S2_Pin GPIO_PIN_4
 #define S2_GPIO_Port GPIOA
 #define S2_EXTI_IRQn EXTI4_IRQn
-#define LD2_Pin GPIO_PIN_5 // declaring PA5 as LD2 output
-#define LD2_GPIO_Port GPIOA //
+#define LD2_Pin GPIO_PIN_5
+#define LD2_GPIO_Port GPIOA
 #define D3_Pin GPIO_PIN_7
 #define D3_GPIO_Port GPIOA
 #define D4_Pin GPIO_PIN_6
