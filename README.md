@@ -14,14 +14,17 @@ This provides a stable clock source for the MCU’s operations.
 Basic Interrupt Management: EXTI interrupts have been configured for certain GPIO pins
 allowing the system to react to external button presses or similar triggers.
 
-Control of the LD2 (PA5) LED using HAL Functions in STM32:
+Current functionalities and configuration
 
-LD2 LED (PA5) Control: The LED on pin PA5 is controlled using HAL functions based on the state of the blue user button (PC13). The LED turns on when the button is pressed and turns off when the button is released.
+Button Interrupt (PC13):
 
-Button-Driven LED Control with HAL: The blue button (PC13) is read using the HAL function HAL_GPIO_ReadPin. When the button is pressed (logic low), the LED on PA5 is turned on using the HAL_GPIO_WritePin function. When the button is not pressed (logic high), the LED is turned off.
+The button is configured as an external interrupt. When pressed, it calls the HAL_GPIO_EXTI_Callback function to toggle the flag variable.
+The flag controls the behavior of the LED: when the flag is set, the LED toggles 10 times (5 on/off cycles).
+Main Loop:
 
-GPIO Pin Control Using HAL: Instead of directly manipulating registers, the project uses the STM32 HAL (Hardware Abstraction Layer) library functions, which abstract the low-level details and make the code more readable and portable. This includes reading the button state and setting the LED state.
+The main loop continuously checks the state of the flag:
+If the flag is set (flag == 0), the LED will blink 5 times (10 toggles).
+If the flag is not set, the LED remains off.
+Flag Mechanism:
 
-PC13 (Blue Button): The blue button is connected to pin PC13, which is configured as a GPIO input using the HAL function HAL_GPIO_ReadPin. The button state is checked continuously in the main loop.
-
-PA5 (LD2 LED): The LED on PA5 is turned on or off based on the button state using the HAL function HAL_GPIO_WritePin. When the button is pressed, PA5 is set high to turn on the LED, and when the button is released, PA5 is set low to turn off the LED.
+The flag is a volatile variable that is toggled between 0 and 1 using the line flag = !flag; in the interrupt handler. This ensures that pressing the button will alternate between blinking the LED and turning it off.
