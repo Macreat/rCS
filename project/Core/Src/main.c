@@ -97,8 +97,8 @@ int main(void)
   LD2_GPIO_Port->MODER |= (1UL << (2 * LD2_Pin));  // LD2 as output
 
   // configure PC13 as input:
-  BlueButton_GPIO_Port->MODER &= ~(3UL << (2 * BlueButton_Pin)); // Clear bits 26 and 27 for PC13 in MODER to configure blueButtom
-  // as input
+  BlueButton_GPIO_Port->MODER &= ~(3UL << (2 * BlueButton_Pin)); // Clear bits 26 and 27 for PC13
+  // in MODER to configure blueButton as input
 
   /* USER CODE END Init */
 
@@ -120,14 +120,27 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    // turning on LD2
-    LD2_GPIO_Port->BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 register (bit set)
-    delayMs(500);
 
-    // turning off LD2
 
-    LD2_GPIO_Port->BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 register (bit reset)
-    delayMs(500);                        // using function delay with 500 ms
+	 // reading state from blue button (PC13)
+	  uint32_t blueButtonState = BlueButton_GPIO_Port -> IDR & BlueButton_Pin; // reading bit from BlueButton
+
+	 // conditional if the button is pressed, then IDR is equal to zero, then turn the LD2
+
+	  if (blueButtonState == 0)
+	  {
+		  // turning on LD2
+		  LD2_GPIO_Port->BSRR = GPIO_BSRR_BS5; // PA5 as high with BS5 register (bit set)
+		  delayMs(500);
+
+
+	  }else {
+
+		  // turning off LD2
+		  LD2_GPIO_Port->BSRR = GPIO_BSRR_BR5; // PA5 as low with BR5 register (bit reset)
+		  delayMs(500);                        // using function delay with 500 ms
+
+	  }
 
     /* USER CODE END WHILE */
 
