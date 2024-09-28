@@ -30,6 +30,8 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+volatile uint8_t flag = 1;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -103,19 +105,14 @@ int main(void)
   while (1)
   {
 
-    // reading state from blue button (PC13) using HAL library
-
-    GPIO_PinState buttonState = HAL_GPIO_ReadPin(BlueButton_GPIO_Port, BlueButton_Pin); // Leer estado de PC13
-
-    uint32_t blueButtonState = BlueButton_GPIO_Port->IDR & BlueButton_Pin; // reading bit from BlueButton
-
-    // conditional if the button is pressed, then IDR is equal to zero, then turn the LD2
-
-    if (blueButtonState == 0)
+    if (flag == 0)
     {
-      // turning on LD2
-      HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET); // PA5 as high (LD2_GpioPort could be GPIOA
-      HAL_Delay(500); // changing function delay to HAL_Delay
+      // toggling LD2
+	   for (int i = 0; i < 10; i++)  // Toggle 10 times to get 5 full on/off cycles
+		{
+			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);  // Toggle the LED state
+			HAL_Delay(250);  // Delay for 250 milliseconds (adjust this value for desired blink speed)
+		}
     }
     else
     {
@@ -283,17 +280,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
     if (GPIO_Pin == BlueButton_Pin)  // Check if the interrupt is from the blue button
     {
-        // Blink the LED 5 times
-        for (int i = 0; i < 10; i++)  // Toggle 10 times to get 5 full on/off cycles
-        {
-            HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);  // Toggle the LED state
-            HAL_Delay(250);  // Delay for 250 milliseconds (adjust this value for desired blink speed)
-        }
+        // using flag state
+    	flag = !flag;
     }
-    else
-    {
-        HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);  // Ensure LED is off when not toggling
-    }
+
+    return flag;
 }
 
 /* USER CODE END 4 */
