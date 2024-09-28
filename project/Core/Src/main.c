@@ -35,7 +35,6 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-static bool prev_val;
 
 
 /* USER CODE END PD */
@@ -282,22 +281,21 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	if(GPIO_Pin == BlueButton_Pin)
-	{
-		static bool prev_val;
-		if (prev_val == false)
-		{
-			HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, SET);
-			prev_val = true;
-		}
-		else
-		{
-
-			HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, RESET);
-			prev_val = false;
-		}
-	}
+    if (GPIO_Pin == BlueButton_Pin)  // Check if the interrupt is from the blue button
+    {
+        // Blink the LED 5 times
+        for (int i = 0; i < 10; i++)  // Toggle 10 times to get 5 full on/off cycles
+        {
+            HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);  // Toggle the LED state
+            HAL_Delay(250);  // Delay for 250 milliseconds (adjust this value for desired blink speed)
+        }
+    }
+    else
+    {
+        HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);  // Ensure LED is off when not toggling
+    }
 }
+
 /* USER CODE END 4 */
 
 /**
