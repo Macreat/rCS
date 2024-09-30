@@ -2,7 +2,7 @@
 
 Current functionalities and configuration for requirements of the system
 
-UART Communication (USART2): Configured to handle serial communication at 115200 baud, with 8 data bits, 1 stop bit, and no parity.
+UART Communication (USART2): Configured to handle serial communication at 256000 baud, with 8 data bits, 1 stop bit, and no parity.
 This is useful for debugging or communication with external devices.
 
 GPIO Initialization: Several GPIO pins have been initialized to control digital outputs or respond to external interrupts.
