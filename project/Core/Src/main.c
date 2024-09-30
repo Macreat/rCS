@@ -24,7 +24,7 @@
 // including fundamental libs
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>'
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -126,22 +126,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-    if (flag == 0)
-    {
-      // toggling LD2
-	   for (int i = 0; i < 10; i++)  // Toggle 10 times to get 5 full on/off cycles
-		{
-			HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);  // Toggle the LED state
-			HAL_Delay(250);  // Delay for 250 milliseconds (adjust this value for desired blink speed)
-		}
-    }
-    else
-    {
-      // turning off LD2
-      HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET); // PA5 as low
-      HAL_Delay(500);
-    }
 
     /* USER CODE END WHILE */
 
@@ -302,14 +286,41 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    if (GPIO_Pin == BlueButton_Pin)  // Check if the interrupt is from the blue button
-    {
-        // using flag state
-    	flag = !flag;
-    }
+	uint32_t current_time = HAL_GetTick(); // getting actual time on MS
+	if (GPIO_Pin == S1_Pin)
+	  { // Button 1 is pressed
+	    if (current_time - last_button_press_left < doublePressTimeFEA)
+	    {
+	      timmingb1++; // Increase counter button 1
+	    }
+	    else
+	    {
+	      timmingb1 = 1; // Reset counter if time is 500ms or plus
+	    }
+	    last_button_press_left = current_time;
+	    flag_left = !flag_left;
+	  }
 
-    return flag;
+	  if (GPIO_Pin == S2_Pin)
+	  { // button 2 is pressed
+	    if (current_time - last_button_press_right < doublePressTimeFEA)
+	    {
+	      timmingb2++;
+	    }
+	    else
+	    {
+	      timmingb2 = 1; // reset counter
+	    }
+	    last_button_press_right = current_time;
+	    flag_right = !flag_right;
+	  }
+	  if (GPIO_Pin == S3_Pin)
+	  {
+ // to add B3 stationary control
+	  }
+
 }
+
 
 /* USER CODE END 4 */
 
