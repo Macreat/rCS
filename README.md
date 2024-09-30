@@ -1,6 +1,6 @@
 ## repository computational structures course
 
-This repository contains the initialization of a basic STM32L4 project. The current setup includes:
+Current functionalities and configuration for requirements of the system
 
 UART Communication (USART2): Configured to handle serial communication at 115200 baud, with 8 data bits, 1 stop bit, and no parity.
 This is useful for debugging or communication with external devices.
@@ -14,17 +14,10 @@ This provides a stable clock source for the MCU’s operations.
 Basic Interrupt Management: EXTI interrupts have been configured for certain GPIO pins
 allowing the system to react to external button presses or similar triggers.
 
-Current functionalities and configuration
+Non-functional:
 
-Button Interrupt (PC13):
+1. Have 3 buttons: Left Turn, Right Turn, Park.
+2. Have 3 lights (LEDs): System Heartbeat, Left Light, Right Light.
+3. Have a debugging port with the PC: USART2
 
-The button is configured as an external interrupt. When pressed, it calls the HAL_GPIO_EXTI_Callback function to toggle the flag variable.
-The flag controls the behavior of the LED: when the flag is set, the LED toggles 10 times (5 on/off cycles).
-Main Loop:
-
-The main loop continuously checks the state of the flag:
-If the flag is set (flag == 0), the LED will blink 5 times (10 toggles).
-If the flag is not set, the LED remains off.
-Flag Mechanism:
-
-The flag is a volatile variable that is toggled between 0 and 1 using the line flag = !flag; in the interrupt handler. This ensures that pressing the button will alternate between blinking the LED and turning it off.
+Functional: 4. Heartbeat with a frequency of 1Hz to indicate that the system is working. 5. If a turn button is pressed 1 time: the corresponding side light flashes 3 times. 6. If a turn button is pressed 2 times in less than 300ms: the light on the corresponding side flashes indefinitely.

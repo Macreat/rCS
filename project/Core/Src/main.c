@@ -141,28 +141,61 @@ int main(void)
 		 if (flag_left)
 		 {
 		   flag_left = !flag_left;
-		   if (timmingb1 == 1)
+		   if (timmingb1 == 1) // checking extern interruption for button
 		   { // if b1 is pressed
 			 HAL_UART_Transmit(&huart2, TL, sizeof(TL) - 1, 100);
 			 for (int i = 0; i < 3; i++)
 			 {
+				// toggle three times for each case
 			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_SET);
 			   HAL_Delay(125); // 4Hz = 125ms ON
 			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_RESET);
 			   HAL_Delay(125);
 			 }
 		   }
-		   else if (timmingb1 >= 2)
+		   else if (timmingb1 >= 2)// when we pressed the same button on less than 500 ms
 		   { // when is pressed more than two times on less than 500 ms
-			 HAL_UART_Transmit(&huart2, TLL, sizeof(TLL) - 1, 100);
+			 HAL_UART_Transmit(&huart2, TLL, sizeof(TLL) - 1, 100); //  UART COMMUNICATION
 			 while (1)
 			 { //
-			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_SET);
+			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_SET); // toggling indefinitely
 			   HAL_Delay(125);
 			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_RESET);
 			   HAL_Delay(125);
 			   if (flag_left || flag_right)
 			   { // Press any turning button to close loop
+				 break;
+			   }
+			 }
+		   }
+		 }
+
+	 //  turn right implementation
+		 if (flag_right)
+		 {
+		   flag_right = !flag_right;
+		   if (timmingb2 == 1)
+		   {
+			 HAL_UART_Transmit(&huart2, TR, sizeof(TR) - 1, 100);
+			 for (int i = 0; i < 3; i++)
+			 {
+			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_SET);
+			   HAL_Delay(125); // 4Hz = 125ms
+			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_RESET);
+			   HAL_Delay(125);
+			 }
+		   }
+		   else if (timmingb2 >= 2)
+		   {
+			 HAL_UART_Transmit(&huart2, TRR, sizeof(TRR) - 1, 100);
+			 while (1)
+			 {
+			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_SET);
+			   HAL_Delay(125);
+			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_RESET);
+			   HAL_Delay(125);
+			   if (flag_left || flag_right)
+			   {
 				 break;
 			   }
 			 }
