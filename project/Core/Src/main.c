@@ -136,6 +136,40 @@ int main(void)
 	     }
 
 
+	     // Logic to implement toggle led's
+	     // first TURNING LEFT LED
+		 if (flag_left)
+		 {
+		   flag_left = !flag_left;
+		   if (timmingb1 == 1)
+		   { // if b1 is pressed
+			 HAL_UART_Transmit(&huart2, TL, sizeof(TL) - 1, 100);
+			 for (int i = 0; i < 3; i++)
+			 {
+			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_SET);
+			   HAL_Delay(125); // 4Hz = 125ms ON
+			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_RESET);
+			   HAL_Delay(125);
+			 }
+		   }
+		   else if (timmingb1 >= 2)
+		   { // when is pressed more than two times on less than 500 ms
+			 HAL_UART_Transmit(&huart2, TLL, sizeof(TLL) - 1, 100);
+			 while (1)
+			 { //
+			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_SET);
+			   HAL_Delay(125);
+			   HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_RESET);
+			   HAL_Delay(125);
+			   if (flag_left || flag_right)
+			   { // Press any turning button to close loop
+				 break;
+			   }
+			 }
+		   }
+		 }
+
+
 
     /* USER CODE END WHILE */
 
