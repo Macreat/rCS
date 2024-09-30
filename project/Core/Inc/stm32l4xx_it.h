@@ -59,10 +59,7 @@ void EXTI0_IRQHandler(void);
 void EXTI1_IRQHandler(void);
 void EXTI4_IRQHandler(void);
 void USART2_IRQHandler(void);
-<<<<<<< HEAD
 void EXTI15_10_IRQHandler(void);
-=======
->>>>>>> 80f4dfd61a2fc049f3023b9660a88f4e965470a0
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
