@@ -66,12 +66,15 @@ void Error_Handler(void);
 #define S2_Pin GPIO_PIN_4
 #define S2_GPIO_Port GPIOA
 #define S2_EXTI_IRQn EXTI4_IRQn
-#define LD2_Pin GPIO_PIN_5
+#define LD1_Pin GPIO_PIN_5
+#define LD1_GPIO_Port GPIOA
+#define LD2_Pin GPIO_PIN_6
 #define LD2_GPIO_Port GPIOA
-#define D3_Pin GPIO_PIN_7
-#define D3_GPIO_Port GPIOA
-#define D4_Pin GPIO_PIN_6
-#define D4_GPIO_Port GPIOB
+#define LD3_Pin GPIO_PIN_7
+#define LD3_GPIO_Port GPIOA
+#define S3_Pin GPIO_PIN_0
+#define S3_GPIO_Port GPIOB
+#define S3_EXTI_IRQn EXTI0_IRQn
 
 /* USER CODE BEGIN Private defines */
 

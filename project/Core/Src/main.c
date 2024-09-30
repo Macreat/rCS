@@ -30,8 +30,6 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
-volatile uint8_t flag = 1;
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -50,6 +48,30 @@ volatile uint8_t flag = 1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+
+
+// variable declaration for UART communication
+uint8_t HB[] = "active system \n\r";
+uint8_t TL[] = "Turn LEFT\n\r";
+uint8_t TR[] = "Turn RIGHT\n\r";
+
+
+uint8_t TLL[] = "Turn LEFT indefinitely\n\r";
+uint8_t TRR[] = "Turn RIGHT indefinitely\n\r";
+uint8_t stac[] = "Stationary mode \n\r";
+
+// variable declaration for system control
+
+volatile uint8_t flag_left = 0;
+volatile uint8_t flag_right = 0;
+volatile uint8_t flag_stat = 0;
+
+volatile uint8_t timmingb1 = 0;
+volatile uint8_t timmingb2 = 0;
+uint32_t last_button_press_left = 0;
+uint32_t last_button_press_right = 0;
+const uint32_t debounceDelay = 50;       // 50ms debounce delay
+const uint32_t doublePressTimeFEA = 500; // max time for double press for each button
 
 /* USER CODE END PV */
 
@@ -194,7 +216,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 256000;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -230,10 +252,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LD2_Pin|D3_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, LD1_Pin|LD3_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(D4_GPIO_Port, D4_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : BlueButton_Pin */
   GPIO_InitStruct.Pin = BlueButton_Pin;
@@ -247,21 +269,23 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LD2_Pin D3_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin|D3_Pin;
+  /*Configure GPIO pins : LD1_Pin LD2_Pin LD3_Pin */
+  GPIO_InitStruct.Pin = LD1_Pin|LD2_Pin|LD3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : D4_Pin */
-  GPIO_InitStruct.Pin = D4_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  /*Configure GPIO pin : S3_Pin */
+  GPIO_InitStruct.Pin = S3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(D4_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(S3_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
   HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
