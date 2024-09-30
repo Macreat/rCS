@@ -126,6 +126,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  // adding logic to implement heartbeat
+	     static uint32_t last_heartbeat_time = 0;
+	     if (HAL_GetTick() - last_heartbeat_time >= 500)  //toggling for 1Hz (500ms on / 500ms off)
+	     {
+	       HAL_GPIO_TogglePin(GPIOA, LD3_Pin);
+	       last_heartbeat_time = HAL_GetTick();
+	       HAL_UART_Transmit(&huart2, HB, sizeof(HB) - 1, 100);
+	     }
+
+
 
     /* USER CODE END WHILE */
 
@@ -317,8 +327,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	  if (GPIO_Pin == S3_Pin)
 	  {
  // to add B3 stationary control
+		timmingb1 = 2;
+		timmingb2 = 2;
+		flag_stat = !flag_stat;
+		last_button_press_left = current_time;
+		last_button_press_right = current_time;
 	  }
-
 }
 
 
