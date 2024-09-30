@@ -70,7 +70,6 @@ volatile uint8_t timmingb1 = 0;
 volatile uint8_t timmingb2 = 0;
 uint32_t last_button_press_left = 0;
 uint32_t last_button_press_right = 0;
-const uint32_t debounceDelay = 50;       // 50ms debounce delay
 const uint32_t doublePressTimeFEA = 500; // max time for double press for each button
 
 /* USER CODE END PV */
@@ -179,9 +178,9 @@ int main(void)
 			 HAL_UART_Transmit(&huart2, TR, sizeof(TR) - 1, 100);
 			 for (int i = 0; i < 3; i++)
 			 {
-			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_SET);
+			   HAL_GPIO_WritePin(GPIOA, LD2_Pin, GPIO_PIN_SET);
 			   HAL_Delay(125); // 4Hz = 125ms
-			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_RESET);
+			   HAL_GPIO_WritePin(GPIOA, LD2_Pin, GPIO_PIN_RESET);
 			   HAL_Delay(125);
 			 }
 		   }
@@ -190,9 +189,9 @@ int main(void)
 			 HAL_UART_Transmit(&huart2, TRR, sizeof(TRR) - 1, 100);
 			 while (1)
 			 {
-			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_SET);
+			   HAL_GPIO_WritePin(GPIOA, LD2_Pin, GPIO_PIN_SET);
 			   HAL_Delay(125);
-			   HAL_GPIO_WritePin(GPIOA, LED2_Pin, GPIO_PIN_RESET);
+			   HAL_GPIO_WritePin(GPIOA, LD2_Pin, GPIO_PIN_RESET);
 			   HAL_Delay(125);
 			   if (flag_left || flag_right)
 			   {
@@ -200,6 +199,35 @@ int main(void)
 			   }
 			 }
 		   }
+		 }
+
+	 // logic for the stationary mode
+		 if (timmingb1 >= 2 && timmingb2 >= 2 &&
+			 (HAL_GetTick() - last_button_press_left < doublePressTimeFEA) &&
+			 (HAL_GetTick() - last_button_press_right < doublePressTimeFEA)) // check if our variables are correct for the stationary mode
+		 {
+
+		   HAL_UART_Transmit(&huart2, stac, sizeof(stac) - 1, 100);
+
+		   while (1)
+		   {
+			   // defining the loop for stationary mode
+			 HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_SET);
+			 HAL_GPIO_WritePin(GPIOA, LD2_Pin, GPIO_PIN_SET);
+			 HAL_Delay(125);
+			 HAL_GPIO_WritePin(GPIOA, LD1_Pin, GPIO_PIN_RESET);
+			 HAL_GPIO_WritePin(GPIOA, LD2_Pin, GPIO_PIN_RESET);
+			 HAL_Delay(125);
+			 if (flag_left || flag_right)
+			 { // press any button to close loop
+
+			   break;
+			 }
+		   }
+
+		   // Reset to contrarrest debounce
+		   timmingb1 = 0;
+		   timmingb2 = 0;
 		 }
 
 
@@ -316,7 +344,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, LD1_Pin|LD3_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : BlueButton_Pin */
   GPIO_InitStruct.Pin = BlueButton_Pin;
