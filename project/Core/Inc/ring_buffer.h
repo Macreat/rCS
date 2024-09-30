@@ -10,7 +10,8 @@
 
 #include <stdint.h>
 
-typedef struct ring_buffer_ {
+typedef struct ring_buffer_
+{
 	uint8_t *buffer;
 	uint8_t head;
 	uint8_t tail;
@@ -20,7 +21,7 @@ typedef struct ring_buffer_ {
 
 } ring_buffer_t;
 
-void ring_buffer_init(ring_buffer_t *rb, uint8_t * mem_add, uint8_t capacity); // defin mem add as apunter
+void ring_buffer_init(ring_buffer_t *rb, uint8_t *mem_add, uint8_t capacity);
 void ring_buffer_reset(ring_buffer_t *rb);
 uint8_t ring_buffer_size(ring_buffer_t *rb);
 uint8_t ring_buffer_is_full(ring_buffer_t *rb);

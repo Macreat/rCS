@@ -1,4 +1,4 @@
-## repository computational structures course
+## repository computational structures course FULL DELIVERY
 
 Current functionalities and configuration for requirements of the system
 
