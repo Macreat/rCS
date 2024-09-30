@@ -1,3 +1,4 @@
+
 ## repository computational structures course
 
 Current functionalities and configuration for requirements of the system
@@ -16,8 +17,15 @@ allowing the system to react to external button presses or similar triggers.
 
 Non-functional:
 
-1. Have 3 buttons: Left Turn, Right Turn, Park.
-2. Have 3 lights (LEDs): System Heartbeat, Left Light, Right Light.
-3. Have a debugging port with the PC: USART2
+# 4100901-tesla-turn-hazard-signal
+This repo contains an approach to implement the tesla turn and hazard signals
 
-Functional: 4. Heartbeat with a frequency of 1Hz to indicate that the system is working. 5. If a turn button is pressed 1 time: the corresponding side light flashes 3 times. 6. If a turn button is pressed 2 times in less than 300ms: the light on the corresponding side flashes indefinitely. 7. If a turn button is pressed and the light on the other side is active: the light is deactivated. 8. If the button for the parking signal is pressed: it works just like a real car, example: Tesla. 9. The flashing frequency of the lights must be acceptable according to "The General Traffic Regulations". 10. Major system events should be able to be identified on a PC serial console.
+## Current functionality
+
+* Heartbeat blinks every 500ms.
+* When left button is pressed once: left light blinks 3 times.
+* When left button is pressed twice in less than 300ms: left light blinks indefinitely
+* When right button is pressed and left light is active: right light stops.
+
+## Future implementations
+

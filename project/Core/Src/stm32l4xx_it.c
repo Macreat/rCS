@@ -254,6 +254,7 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 1 */
 }
 
+<<<<<<< HEAD
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
   */
@@ -268,6 +269,8 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
+=======
+>>>>>>> 80f4dfd61a2fc049f3023b9660a88f4e965470a0
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
